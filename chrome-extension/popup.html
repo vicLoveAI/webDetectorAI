@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网页内容一键摘要器</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1 class="title">📄 网页摘要器</h1>
+    <button id="settings-btn" class="icon-btn" title="设置">⚙️</button>
+  </div>
+
+  <!-- Token Confirmation Dialog -->
+  <div id="token-dialog" class="token-dialog hidden">
+    <div class="token-dialog-overlay"></div>
+    <div class="token-dialog-box">
+      <h3>⚡ Token 用量确认</h3>
+      <p id="token-dialog-msg"></p>
+      <div class="token-dialog-actions">
+        <button id="token-cancel-btn" class="dialog-btn cancel">取消</button>
+        <button id="token-confirm-btn" class="dialog-btn confirm">继续</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main View: Summarize -->
+  <div id="summarize-view" class="view active">
+    <div class="main-actions">
+      <button id="summarize-btn" class="primary-btn">
+        <span id="summarize-btn-text">🔍 一键探测</span>
+      </button>
+    </div>
+
+    <div id="status-area" class="status-area">
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <span id="loading-text">正在提取页面内容…</span>
+      </div>
+      <div id="streaming-indicator" class="streaming-indicator hidden">
+        <span class="stream-dot"></span>
+        <span>AI 正在生成…</span>
+        <button id="cancel-stream-btn" class="cancel-stream-btn" title="停止生成">✕ 取消</button>
+      </div>
+      <div id="error" class="error hidden"></div>
+    </div>
+
+    <div id="result-area" class="result-area hidden">
+      <div class="result-header">
+        <span id="result-label" class="result-label">📝 概要结果</span>
+        <div class="result-actions">
+          <span id="token-info" class="token-info hidden"></span>
+          <button id="copy-btn" class="small-btn">📋 复制 Markdown</button>
+        </div>
+      </div>
+      <div id="result-content" class="result-content"></div>
+    </div>
+  </div>
+
+  <!-- Settings View -->
+  <div id="settings-view" class="view">
+    <div class="settings-section">
+      <h2 class="section-title">🌐 语言与外观</h2>
+      <div class="form-group">
+        <label for="lang-select">输出语言</label>
+        <select id="lang-select">
+          <option value="auto">跟随网页语言</option>
+          <option value="zh-CN">中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2 class="section-title">🤖 大模型 API 配置</h2>
+      <div class="form-group">
+        <label for="api-base">API 基础地址</label>
+        <input type="url" id="api-base" placeholder="https://api.openai.com/v1" autocomplete="off">
+        <span class="form-hint">支持 OpenAI 及所有兼容接口（如 DeepSeek、Qwen 等）</span>
+      </div>
+
+      <div class="form-group">
+        <label for="api-key">API Key</label>
+        <div class="password-field">
+          <input type="password" id="api-key" placeholder="sk-..." autocomplete="off">
+          <button id="toggle-key-btn" class="toggle-btn" title="显示/隐藏">👁️</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="model-name">模型名称</label>
+        <div class="model-field">
+          <input type="text" id="model-name" placeholder="gpt-3.5-turbo" autocomplete="off">
+          <button id="fetch-models-btn" class="fetch-btn">📡 查询模型</button>
+        </div>
+        <div id="model-list" class="model-list hidden"></div>
+        <div id="model-list-loading" class="model-list-loading hidden">
+          <div class="spinner-small"></div>
+          <span>正在获取模型列表…</span>
+        </div>
+        <div id="model-list-error" class="model-list-error hidden"></div>
+      </div>
+    </div>
+
+    <button id="save-settings-btn" class="primary-btn">💾 保存设置</button>
+    <button id="test-connection-btn" class="secondary-btn">🔌 测试连接</button>
+    <div id="settings-status" class="settings-status hidden"></div>
+  </div>
+
+  <script src="lib/markdown.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
