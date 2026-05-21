@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "网页内容一键摘要器",
+  "short_name": "网页摘要器",
+  "version": "1.0.0",
+  "description": "一键探测网页内容概要，Markdown 格式展示，支持自定义大模型 API（OpenAI/DeepSeek 等）",
+  "author": "webDetectorAI",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "contextMenus"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "网页内容一键摘要器",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "summarize-page": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "一键探测当前网页概要"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
